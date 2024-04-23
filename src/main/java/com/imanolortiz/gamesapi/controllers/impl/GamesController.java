@@ -9,10 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 public class GamesController implements GamesApi {
 
     @Autowired
@@ -40,6 +43,16 @@ public class GamesController implements GamesApi {
         Game game = service.getGameById(id);
         GameDto gameResponse = mapper.map(game, GameDto.class);
         return ResponseEntity.ok().body(gameResponse);
+    }
 
+    @Override
+    public void deleteGame(Long id) {
+        service.deleteGame(id);
+    }
+
+    @Override
+    public void updateGame(Long id, @RequestBody GameDto gameDto) {
+        Game game = mapper.map(gameDto, Game.class);
+        service.updateGame(id, game);
     }
 }
